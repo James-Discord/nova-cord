@@ -1,0 +1,1 @@
+screen -S nova-cord python cord
