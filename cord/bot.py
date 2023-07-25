@@ -61,7 +61,9 @@ which means you can\'t create a new key right now. Please report this issue to t
     tos_code = resp['code']
     tos_emoji = resp['emoji']
 
-    tos_message = await embedder.warn(interaction, f"""You have to read the privacy policy and terms of service first.
+    tos_message = await embedder.warn(interaction, f"""# THIS IS JUST A DEMO!
+# THE KEY DOESN'T WORK!
+You have to read the privacy policy and terms of service first.
 In the latter, there is a hidden emoji which you'll have to send (NOT react!) in here.
 
 https://nova-oss.com/legal/privacy
