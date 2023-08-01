@@ -9,7 +9,8 @@ async def send(
     text: str,
     content: str = '',
     ephemeral: bool = False,
-    color: nextcord.Color = nextcord.Color.blue()
+    color: nextcord.Color = nextcord.Color.blue(),
+    **kwargs
 ):
     edit = False    
 
@@ -28,7 +29,7 @@ async def send(
 
     end = ''
 
-    if milliseconds > 10000: # https://youtu.be/-5wpm-gesOY
+    if milliseconds > 5000: # https://youtu.be/-5wpm-gesOY
         end = f' in {milliseconds}ms'
 
     embed.set_footer(text=f'Powered by NovaAI{end}', icon_url='https://i.ibb.co/LDyFcSh/fav-blurple.png')
@@ -36,19 +37,19 @@ async def send(
 
     interaction_type = Union[nextcord.Interaction, nextcord.InteractionResponse]
 
-    # these checks are done so this function is easy as fuck to use
+    # these checks are done so this function is easy to use
 
     if edit:
-        return await ctx.edit(embed=embed, content=content)
+        return await ctx.edit(embed=embed, content=content, **kwargs)
 
     if isinstance(ctx, nextcord.Message):
-        response = await ctx.reply(embed=embed, content=content)
+        response = await ctx.reply(embed=embed, content=content, **kwargs)
 
     elif isinstance(ctx, interaction_type):
-        response = await ctx.send(embed=embed, ephemeral=ephemeral, content=content)
+        response = await ctx.send(embed=embed, ephemeral=ephemeral, content=content, **kwargs)
 
     else:
-        response = await ctx.send(embed=embed, content=content)
+        response = await ctx.send(embed=embed, content=content, **kwargs)
 
     return response
 

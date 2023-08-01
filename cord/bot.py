@@ -1,13 +1,14 @@
-# This example requires the 'members' and 'message_content' privileged intents to function.
+"""Bot base."""
 
 import os
 import nextcord
 
-import system
 import chatbot
 import embedder
 import autochat
+import accounts
 import community
+import credential_manager
 
 from dotenv import load_dotenv
 from nextcord.ext import commands
@@ -15,9 +16,11 @@ from nextcord import SlashOption
 
 load_dotenv()
 
+guild_ids = [int(guild_id) for guild_id in os.getenv('DISCORD_GUILD_IDS').split()]
+
 bot = commands.Bot(
     intents=nextcord.Intents.all(),
-    default_guild_ids=[int(guild_id) for guild_id in os.getenv('DISCORD_GUILD_IDS').split()] # so slash commands work
+    default_guild_ids=guild_ids  # so slash commands work
 )
 
 @bot.event
@@ -33,29 +36,34 @@ async def on_message(message):
     await autochat.process(message)
     await bot.process_commands(message)
 
-@bot.slash_command(description='Chat with AI')
-async def chat(interaction: nextcord.Interaction,
-    prompt: str = SlashOption(description='AI Prompt', required=True)
-):
-    await chatbot.respond(interaction, prompt)
+# @bot.slash_command(description='Chat with AI')
+# async def chat(interaction: nextcord.Interaction,
+#     prompt: str = SlashOption(description='AI Prompt', required=True)
+# ):
+#     await chatbot.respond(interaction, prompt)
 
 @bot.slash_command(description='Sets your DMs up, so you can write the bot.')
-async def dm(interaction: nextcord.Interaction):
+async def dm_setup(interaction: nextcord.Interaction):
     try:
         await interaction.user.create_dm()
         await embedder.info(interaction.user.dm_channel, 'Hello!')
     except nextcord.Forbidden:
         await embedder.error(interaction, text="""Please open this server\'s options,
 go to `Privacy Settings` and enable `Direct Messages` as well as `Message Requests`.""")
-    else:     
+
+    else:
         await embedder.ok(interaction, 'Great, DMs are set up successfully!')
 
-@bot.slash_command(description='Get your secret NovaAI API credentials.')
+@bot.slash_command(description='Create your account and get your API key.')
 async def credentials(interaction: nextcord.Interaction):
-    return await system.get_credentials(interaction)
+    return await credential_manager.get_credentials(interaction)
 
 @bot.slash_command(description='Leaderboard.')
 async def leaderboard(interaction: nextcord.Interaction):
-    await community.leaderboard(interaction)
+    return await community.leaderboard(interaction)
+
+@bot.slash_command(description='Get info and stats about your NovaAI API account.')
+async def account(interaction: nextcord.Interaction):
+    return await accounts.get_account(interaction)
 
 bot.run(os.getenv('DISCORD_TOKEN'))
