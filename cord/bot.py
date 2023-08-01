@@ -66,4 +66,12 @@ async def leaderboard(interaction: nextcord.Interaction):
 async def account(interaction: nextcord.Interaction):
     return await accounts.get_account(interaction)
 
+@bot.slash_command(description='Lookup members by their Discord ID.')
+async def lookup(interaction: nextcord.Interaction,
+    discord_id: int = SlashOption(description='Discord ID', required=True)
+):
+    for member in interaction.guild.members:
+        if str(member.id).startswith(str(discord_id)):
+            return await embedder.ok(interaction, f'Result: {member.mention} (`{member.id}`)')
+
 bot.run(os.getenv('DISCORD_TOKEN'))

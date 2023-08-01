@@ -1,4 +1,6 @@
 import embedder
+
+
 from nextcord import DMChannel
 
 async def process(message):
@@ -13,7 +15,19 @@ async def process(message):
         return
 
     if 'N0V4x0SS' in text or 'T3BlbkFJ' in text:
-        await embedder.warn(message, f'{message.author.mention}, I think you sent an *OpenAI* or *NovaAI* key in here, which could lead to other users accessing your API account without your knowledge. Be very careful with API credentials!', delete_after=15)
+        censored_text = ''
+
+        for word in text.split():
+            if 'N0V4x0SS' in word or 'T3BlbkFJ' in word:
+                censored_text += '❚' * len(word)
+            else:
+                censored_text += word
+            censored_text += ' '
+
+        await embedder.warn(message, f"""{message.author.mention},
+I think you sent an *OpenAI* or *NovaAI* key in here,
+which could lead to other users accessing your API account without your knowledge.
+Be very careful with API credentials!""", content=f'||{message.author.mention} sent (censored version):\n```{censored_text}```||', delete_after=60)
         await message.delete()
 
     # COMMANDS: WRONG CHANNEL
@@ -28,4 +42,5 @@ async def process(message):
     if text.startswith('/') and len(text) > 2:
         await embedder.warn(message, """Need help running commands? Check out
 **https://nova-oss.com/novacord**!""", delete_after=10)
+        await message.delete()
         return

@@ -11,7 +11,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
 async def get_credentials(interaction):
     for _ in range(2):
         try:
