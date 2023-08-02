@@ -1,5 +1,4 @@
 import nextcord
-import datetime
 
 from typing import Union
 
@@ -24,21 +23,12 @@ async def send(
         color=color
     )
 
-    time_difference = datetime.datetime.now(datetime.timezone.utc) - ctx.created_at
-    milliseconds = int(time_difference.total_seconds() * 1000)
-
-    end = ''
-
-    if milliseconds > 5000: # https://youtu.be/-5wpm-gesOY
-        end = f' in {milliseconds}ms'
-
-    embed.set_footer(text=f'Powered by NovaAI{end}', icon_url='https://i.ibb.co/LDyFcSh/fav-blurple.png')
+    embed.set_footer(text='Powered by NovaAI with ❤️', icon_url='https://i.ibb.co/LDyFcSh/fav-blurple.png')
     embed.set_author(name='NovaCord', url='https://nova-oss.com/novacord')
 
     interaction_type = Union[nextcord.Interaction, nextcord.InteractionResponse]
 
     # these checks are done so this function is easy to use
-
     if edit:
         return await ctx.edit(embed=embed, content=content, **kwargs)
 

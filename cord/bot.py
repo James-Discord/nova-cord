@@ -8,6 +8,7 @@ import embedder
 import autochat
 import accounts
 import community
+import tutorials
 import credential_manager
 
 from dotenv import load_dotenv
@@ -64,7 +65,21 @@ async def leaderboard(interaction: nextcord.Interaction):
 
 @bot.slash_command(description='Get info and stats about your NovaAI API account.')
 async def account(interaction: nextcord.Interaction):
-    return await accounts.get_account(interaction)
+    return await accounts.get_info(interaction)
+
+@bot.slash_command(name='credits', description='Get information about the amount of credits you have on your NovaAI API account.')
+async def credits_(interaction: nextcord.Interaction):
+    return await accounts.get_credits(interaction)
+
+@bot.slash_command(description='View examples and tips for implementing NovaAI\'s API.')
+async def tutorial(interaction: nextcord.Interaction,
+    how_can_i: str = SlashOption(#
+        description='Read a tutorial on how to...',
+        required=True,
+        choices=['fix ModuleNotFoundErrors', 'use the Python library', 'use curl', 'use Node.js', 'program a Python Discord Bot with streaming']
+    )
+):
+    return await tutorials.send(interaction, how_can_i)
 
 @bot.slash_command(description='Lookup members by their Discord ID.')
 async def lookup(interaction: nextcord.Interaction,
