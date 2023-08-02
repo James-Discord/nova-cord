@@ -31,7 +31,7 @@ Please report this issue to the staff!""", ephemeral=True)
 
     if user_response.status_code == 404:
         await embedder.error(interaction, """You don't have an account yet!""", ephemeral=True)
-        raise ValueError('Account not found.')
+        return
 
     return user_response.json()
 
@@ -52,7 +52,8 @@ Learn more about how to use our API at **https://nova-oss.com**.
 
 async def get_credits(interaction):
     account = await get_account(interaction)
+    amount_credits = account["credits"]
 
     await embedder.info(interaction, f"""### Your credits
-**Amount:** `{account["credits"]}`
+Amount: **{amount_credits if amount_credits < 1000000 else '∞'}**
 """, ephemeral=True)
