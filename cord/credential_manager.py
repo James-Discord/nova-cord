@@ -67,6 +67,7 @@ We reserve the right to __disable your API key at any time__ if you violate our 
 If you accept the terms of service and privacy policy, feel free to use the following API key:
 
 ## ||`{api_key}`||
+(Don't see anything? Click the empty space above to reveal it.)
 
 Learn more about how to use our API at **https://nova-oss.com**.
 """, ephemeral=True)

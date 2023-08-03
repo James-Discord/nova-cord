@@ -1,6 +1,59 @@
 import embedder
 
 async def send(interaction, how_can_i):
+    if how_can_i == 'fix error 429 (ratelimit/not enough credits)':
+        text = """This means you used the API too often. You can either wait or:
+- boost the server 
+- donate cryptocurrency (and contact us before or after so we can verify it was you)
+- contribute in any meaningful (we decide) way (programming, research, design, moderating the Discord etc.)
+
+If you try to bypass this, all your accounts and IP addresses may get banned.
+"""
+
+    if how_can_i == 'fix error 401 (invalid key)':
+        text = """Make sure you entered your NovaAI API key (starting with `nv-`) correctly.
+For HTTP requests, it can be specified using a header:
+```
+Authorization: Bearer nv-...
+```
+"""
+
+    if how_can_i == 'use GPT-4':
+        text = """Yes, we support GPT-4. For free. You read that correctly.
+Please note though that it might not be very stable or support every parameter.
+
+Simply set the model to `gpt-4`. That's it <3
+"""
+
+    if how_can_i == 'use the API in custom front-ends':
+        text = """Depending on the front end, the endpoints might differ a bit:
+
+**ChatGPT Next Web**
+(https://chat-gpt-next-web.vercel.app/):
+`https://api.nova-oss.com`
+
+Code: https://github.com/Yidadaa/ChatGPT-Next-Web
+
+**Better ChatGPT**
+(https://chat.resisto.rodeo/, https://chatgpt1.nextweb.fun/, https://freechatgpt.chat/, https://bettergpt.chat/):
+`https://api.nova-oss.com/v1/chat/completions`
+
+Code: https://github.com/ztjhz/BetterChatGPT
+
+
+Don't forget to also set the correct model and API key!
+
+**Warning:** in theory, these front-ends could __steal your NovaAI key__.
+Self-host them if you know how to. Otherwise, wait for us to create a official NovaAI front-end. 
+"""
+
+    if how_can_i == 'get my NovaAI API key':
+        text = """Open up the **`#commands`** channel and run **`/credentials`**.
+Then, follow the instructions carefully.
+
+Fore more information: https://nova-oss.com/novacord
+"""
+
     if how_can_i == 'fix ModuleNotFoundErrors':
         text = """You can install Python packages using `pip`. Here's an example: `pip install openai`.
 Don't have `pip` installed? Learn more here: https://pip.pypa.io/en/stable/installation/.
@@ -127,4 +180,4 @@ async def chat(interaction: nextcord.Interaction,
 bot.run(os.getenv('DISCORD_TOKEN'))
 ```
 """
-    return await embedder.info(interaction, text)
+    return await embedder.info(interaction, title=f'Tutorial: "{how_can_i}"', text=text)

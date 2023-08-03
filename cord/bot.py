@@ -76,7 +76,18 @@ async def tutorial(interaction: nextcord.Interaction,
     how_can_i: str = SlashOption(#
         description='Read a tutorial on how to...',
         required=True,
-        choices=['fix ModuleNotFoundErrors', 'use the Python library', 'use curl', 'use Node.js', 'program a Python Discord Bot with streaming']
+        choices=[
+            'fix error 401 (invalid key)',
+            'fix error 429 (ratelimit/not enough credits)',
+            'use GPT-4',
+            'use curl',
+            'use Node.js',
+            'get my NovaAI API key',
+            'use the Python library',
+            'fix ModuleNotFoundErrors',
+            'use the API in custom front-ends',
+            'program a Python Discord Bot with streaming',
+        ]
     )
 ):
     return await tutorials.send(interaction, how_can_i)
