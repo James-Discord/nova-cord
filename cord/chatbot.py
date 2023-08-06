@@ -11,7 +11,7 @@ async def respond(interaction, prompt):
     partial_message = await interaction.send('‎') # send an empty message
     message = await partial_message.fetch() # gets the message that was send
 
-    openai.api_base = 'https://nova-oss.com'
+    openai.api_base = os.getenv('OPENAI_BASE')
     openai.api_key = os.getenv('OPENAI_KEY')
 
     model = os.getenv('OPENAI_MODEL')
