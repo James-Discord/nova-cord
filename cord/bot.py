@@ -41,11 +41,11 @@ async def on_message(message):
     await autochat.process(message)
     await bot.process_commands(message)
 
-@bot.slash_command(description='Chat with AI')
-async def chat(interaction: nextcord.Interaction,
-    prompt: str = SlashOption(description='AI Prompt', required=True)
-):
-    await chatbot.respond(interaction, prompt)
+# @bot.slash_command(description='Chat with AI')
+# async def chat(interaction: nextcord.Interaction,
+#     prompt: str = SlashOption(description='AI Prompt', required=True)
+# ):
+#     await chatbot.respond(interaction, prompt)
 
 @bot.slash_command(description='Sets your DMs up, so you can write the bot.')
 async def dm_setup(interaction: nextcord.Interaction):
