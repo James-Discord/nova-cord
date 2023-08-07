@@ -16,9 +16,9 @@ async def get_credentials(interaction):
         try:
             get_response = await accounts.request_user_by_discord_id(interaction.user.id)
         except Exception as exc:
-            await embedder.error(interaction, """Sorry,
-    there was an issue while checking if you already have an account.
-    Please report this issue to the staff!""", ephemeral=True)
+            await embedder.error(interaction, """Sorry,\n" \
+there was an issue while checking if you already have an account.
+Please report this issue to the staff!""", ephemeral=True)
             raise exc
 
         if get_response.status_code == 200: # user exists
@@ -49,13 +49,13 @@ async def get_credentials(interaction):
 
         except Exception as exc:
             await embedder.error(interaction, """Sorry,
-    your account could not be created. Please report this issue to the staff!""", ephemeral=True)
+your account could not be created. Please report this issue to the staff!""", ephemeral=True)
 
             raise exc
 
         else:
             await embedder.ok(interaction, f"""Welcome to NovaAI, {interaction.user.mention}!
-    Your account was created successfully.""", ephemeral=True)
+Your account was created successfully.""", ephemeral=True)
 
     api_key = get_response.json()['api_key']
 
