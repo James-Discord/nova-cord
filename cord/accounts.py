@@ -57,3 +57,27 @@ async def get_credits(interaction):
     await embedder.info(interaction, f"""### Your credits
 Amount: **{amount_credits if amount_credits < 1000000 else '∞'}**
 """, ephemeral=True)
+
+async def get_credits_of(interaction, user):
+    if "Maintainer" not in interaction.user.roles:
+        await embedder.error(interaction, """Sorry, you don't have the permission to do that.""", ephemeral=True)
+        return
+
+    try:
+        userinfo = await request_user_by_discord_id(user.id)
+
+    except Exception as exc:
+        await embedder.error(interaction, """Sorry, there was an error while checking if you have an account.
+Please report this issue to the staff!""", ephemeral=True)
+        raise exc
+
+    if userinfo.status_code == 404:
+        await embedder.error(interaction, """You don't have an account yet!""", ephemeral=True)
+        return
+
+    account = userinfo.json()
+    amount_credits = account["credits"]
+
+    await embedder.info(interaction, f"""### Credits of {user.name}
+Amount: **{amount_credits if amount_credits < 1000000 else '∞'}**
+""", ephemeral=True)
