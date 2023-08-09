@@ -81,3 +81,41 @@ Please report this issue to the staff!""", ephemeral=True)
     await embedder.info(interaction, f"""### Credits of {user.name}
 Amount: **{amount_credits if amount_credits < 1000000 else '∞'}**
 """, ephemeral=True)
+
+async def set_credits(interaction, user, amount):
+    if not interaction.user.guild_permissions.administrator:
+        await embedder.error(interaction, """Sorry, you don't have the permission to do that.""", ephemeral=True)
+        return
+    
+    try:
+        userinfo = await request_user_by_discord_id(user.id)
+
+    except Exception as exc:
+        await embedder.error(interaction, """Sorry, there was an error while checking if you have an account.
+Please report this issue to the staff!""", ephemeral=True)
+        raise exc
+    
+    if userinfo.status_code == 404:
+        await embedder.error(interaction, """You don't have an account yet!""", ephemeral=True)
+        return
+    
+    account = userinfo.json()
+    account["credits"] = amount
+
+    try:
+        requests.put(
+            url=f'https://api.nova-oss.com/users?discord_id={account["auth"]["discord"]}',
+            timeout=3,
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': os.getenv('CORE_API_KEY')
+            },
+            data=json.dumps(account)
+        )
+        
+    except Exception as exc:
+        await embedder.error(interaction, """Sorry, there was an error while setting your credits.
+Please report this issue to the staff!""", ephemeral=True)
+        raise exc
+    
+    await embedder.ok(interaction, f"""Successfully set the credits of {user.name} to **{amount}**.""", ephemeral=True)

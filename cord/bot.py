@@ -79,6 +79,10 @@ async def credits_(interaction: nextcord.Interaction):
 async def credits_of(interaction: nextcord.Interaction, user: nextcord.User):
     return await accounts.get_credits_of(interaction, user)
 
+@bot.slash_command(description='Manually set the credits of a certain user. Admin only.')
+async def set_credits(interaction: nextcord.Interaction, user: nextcord.User, amount: int):
+    return await accounts.set_credits(interaction, user, amount)
+
 @bot.slash_command(description='View examples and tips for implementing NovaAI\'s API.')
 async def tutorial(interaction: nextcord.Interaction,
     how_can_i: str = SlashOption(#
