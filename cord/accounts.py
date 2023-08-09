@@ -59,7 +59,7 @@ Amount: **{amount_credits if amount_credits < 1000000 else '∞'}**
 """, ephemeral=True)
 
 async def get_credits_of(interaction, user):
-    if "Maintainer" not in interaction.user.roles:
+    if not interaction.user.guild_permissions.administrator:
         await embedder.error(interaction, """Sorry, you don't have the permission to do that.""", ephemeral=True)
         return
 
