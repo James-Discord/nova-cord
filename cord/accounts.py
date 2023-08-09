@@ -12,7 +12,7 @@ load_dotenv()
 
 async def request_user_by_discord_id(discord_id):
     return requests.get(
-        url=f'https://api.nova-oss.com/users?discord_id="{discord_id}"',
+        url=f'https://api.nova-oss.com/users?discord_id={discord_id}',
         timeout=3,
         headers={
             'Content-Type': 'application/json',
