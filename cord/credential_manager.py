@@ -40,7 +40,7 @@ Please report this issue to the staff!""", ephemeral=True)
                 'Authorization': os.getenv('CORE_API_KEY')
             },
             json={
-                'discord_id': interaction.user.id
+                'discord_id': str(interaction.user.id)
             }
         )
 
