@@ -40,6 +40,11 @@ Code: https://github.com/Yidadaa/ChatGPT-Next-Web
 
 Code: https://github.com/ztjhz/BetterChatGPT
 
+**ai.ls**
+(https://ai.ls, https://chatsverse.xyz/):
+`https://api.nova-oss.com`
+
+*Warning - __not__ open source!*
 
 Don't forget to also set the correct model and API key!
 

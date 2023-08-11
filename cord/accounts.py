@@ -52,6 +52,9 @@ Learn more about how to use our API at **https://nova-oss.com**.
 
 async def get_credits(interaction):
     account = await get_account(interaction)
+    if not account:
+        return
+
     amount_credits = account["credits"]
 
     await embedder.info(interaction, f"""### Your credits
