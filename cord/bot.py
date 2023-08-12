@@ -109,7 +109,7 @@ async def get_member_song_line(member):
     if member.activity and member.activity.type == nextcord.ActivityType.listening:
         album = ''
         if member.activity.title != member.activity.album:
-            album = '({member.activity.album})'
+            album = f'({member.activity.album})'
 
         return f'{member.mention}: [{member.activity.artist.replace(";", ",")} - **{member.activity.title}** {album}]({member.activity.track_url})\n'
     return ''
