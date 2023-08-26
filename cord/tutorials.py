@@ -54,6 +54,9 @@ Then, follow the instructions carefully.
 Fore more information: https://nova-oss.com/novacord
 """
 
+    if how_can_i == 'see my available credits':
+        text = """Open up the **`#commands`** channel and run **`/credits`**."""
+
     if how_can_i == 'fix ModuleNotFoundErrors':
         text = """You can install Python packages using `pip`. Here's an example: `pip install openai`.
 Don't have `pip` installed? Learn more here: https://pip.pypa.io/en/stable/installation/.
