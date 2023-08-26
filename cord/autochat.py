@@ -14,6 +14,9 @@ async def process(message):
     if isinstance(message.channel, DMChannel):
         return
 
+    if text == '.empty':
+        return await message.channel.send('‎')
+
     if 'N0V4x0SS' in text or 'T3BlbkFJ' in text:
         censored_text = ''
 
@@ -34,7 +37,7 @@ Be very careful with API credentials!""", content=f'||{message.author.mention} s
     commands_allowed = ('commands' in message.channel.name) or (message.author.guild_permissions.manage_messages)
 
     if text.startswith('/') and not commands_allowed:
-        await embedder.error(message, f'{message.author.mention}, plesae __only__ run commands in <#1133103276871667722>.', delete_after=10)
+        await embedder.error(message, f'{message.author.mention}, please __only__ run commands in <#1133103276871667722>.', delete_after=10)
         await message.delete()
         return
 
@@ -42,5 +45,10 @@ Be very careful with API credentials!""", content=f'||{message.author.mention} s
     if text.startswith('/') and len(text) > 2:
         await embedder.warn(message, """Need help running commands? Check out
 **https://nova-oss.com/novacord**!""", delete_after=10)
+        await message.delete()
+        return
+
+    if 'dQw4w9WgXcQ' in text:
+        await embedder.warn(message, """Hide your rickrolls better next time...""", delete_after=10)
         await message.delete()
         return

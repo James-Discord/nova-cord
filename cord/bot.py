@@ -2,6 +2,7 @@
 
 import os
 import nextcord
+import datetime
 
 import api
 import chatbot
@@ -24,14 +25,6 @@ bot = commands.Bot(
     intents=nextcord.Intents.all(),
     default_guild_ids=guild_ids  # so slash commands work
 )
-
-@bot.event
-async def on_ready():
-    print(f'Online as {bot.user} (ID: {bot.user.id})')
-
-    await api.start(bot)
-
-    await bot.change_presence(activity=nextcord.Game(name='with fire'))
 
 @bot.event
 async def on_message(message):
@@ -79,6 +72,10 @@ async def credits_(interaction: nextcord.Interaction):
 async def credits_of(interaction: nextcord.Interaction, user: nextcord.User):
     return await accounts.get_credits_of(interaction, user)
 
+@bot.slash_command(description='Manually set the credits of a certain user. Admin only.')
+async def set_credits(interaction: nextcord.Interaction, user: nextcord.User, amount: int):
+    return await accounts.set_credits(interaction, user, amount)
+
 @bot.slash_command(description='View examples and tips for implementing NovaAI\'s API.')
 async def tutorial(interaction: nextcord.Interaction,
     how_can_i: str = SlashOption(#
@@ -107,5 +104,58 @@ async def lookup(interaction: nextcord.Interaction,
     for member in interaction.guild.members:
         if str(member.id).startswith(str(discord_id)):
             return await embedder.ok(interaction, f'Result: {member.mention} (`{member.id}`)')
+
+async def get_member_song_line(member):
+    if member.activity and member.activity.type == nextcord.ActivityType.listening:
+        album = ''
+        if member.activity.title != member.activity.album:
+            album = f'({member.activity.album})'
+
+        return f'{member.mention}: [{member.activity.artist.replace(";", ",")} - **{member.activity.title}** {album}]({member.activity.track_url})\n'
+    return ''
+
+@bot.slash_command(description='See what others in this Discord are listening right now.')
+async def music(interaction: nextcord.Interaction):
+    text = ''
+
+    for member in interaction.guild.members:
+        text += await get_member_song_line(member)
+
+    if text:
+        return await embedder.ok(interaction, text)
+    return await embedder.error(interaction, 'No one is listening to anything right now.')
+
+# update the message in #music every 10 seconds to show what people are listening to
+@bot.event
+async def on_ready():
+    print(f'Online as {bot.user} (ID: {bot.user.id})')
+
+    await api.start(bot)
+    await bot.change_presence(activity=nextcord.Game(name='with fire'))
+
+    while True:
+        text = ''
+        channel = bot.get_channel(int(os.getenv('DISCORD_MUSIC_CHANNEL_ID')))
+
+        if channel:
+            async for message in channel.history(limit=1):
+                if message.author == bot.user:
+                    for member in channel.guild.members:
+                        text += await get_member_song_line(member)
+
+                    if text:
+                        await message.edit(embed=nextcord.Embed(
+                            title='What are people listening to right now?',
+                            description=text,
+                            color=nextcord.Color.green()
+                        ))
+                    else:
+                        await message.edit(embed=nextcord.Embed(
+                            title='What are people listening to right now?',
+                            description='No one is listening to anything right now :(',
+                            color=nextcord.Color.red()
+                        ))
+
+        await nextcord.utils.sleep_until(nextcord.utils.utcnow().replace(second=0, microsecond=0) + datetime.timedelta(seconds=10))
 
 bot.run(os.getenv('DISCORD_TOKEN'))

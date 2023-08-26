@@ -5,9 +5,9 @@ import embedder
 
 async def process_channel(channel, scores):
     if channel.name in ['general', 'support', 'suggestions', 'showcase', 'team-discussion', 'prompts', 'research-resources']:
-        after = datetime.datetime.now() - datetime.timedelta(days=7)
+        after = datetime.datetime.now() - datetime.timedelta(days=5)
 
-        async for message in channel.history(limit=1000, after=after):
+        async for message in channel.history(limit=500, after=after):
             if not '```' in message.content: # no code
                 if not scores.get(message.author.id):
                     scores[message.author.id] = 0
@@ -27,11 +27,15 @@ async def leaderboard(interaction):
 
     emojis = [':first_place:', ':second_place:', ':third_place:', ':four:', ':five:', ':six:', ':seven:', ':eight:', ':nine:', ':keycap_ten:']
 
-    text = 'Words (excluding code) typed in selected channels in the last 7 days with a limit of 1000 messages per channel:\n'
+    text = 'Words (excluding code) typed in selected channels in the last 5 days with a limit of 500 messages per channel:\n'
     place = 0
 
     for user in list(board.keys()):
-        text += f'{emojis[place]} {interaction.guild.get_member(user).mention} **{scores[user]}**\n'
+        try:
+            ping = interaction.guild.get_member(user).mention
+        except:
+            ping = '[user left]'
+        text += f'{emojis[place]} {ping} **{scores[user]}**\n'
         place += 1
 
     await embedder.info(msg, title='Leaderboard (7 days)', text=text)

@@ -40,6 +40,11 @@ Code: https://github.com/Yidadaa/ChatGPT-Next-Web
 
 Code: https://github.com/ztjhz/BetterChatGPT
 
+**ai.ls**
+(https://ai.ls, https://chatsverse.xyz/):
+`https://api.nova-oss.com`
+
+*Warning - __not__ open source!*
 
 Don't forget to also set the correct model and API key!
 
@@ -63,7 +68,7 @@ Don't have `pip` installed? Learn more here: https://pip.pypa.io/en/stable/insta
 """
 
     if how_can_i == 'use the Python library':
-        text = """For the official `openai` Python library, you just need to set the `openai.api_base` to `https://api.nova-oss.com/v1`.
+        text = """To use the official `nova_python` Python library, you just need to do the following.
 ```py
 from nova_python import Models, Endpoints, NovaClient
 
