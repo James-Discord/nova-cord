@@ -34,7 +34,7 @@ which means you can\'t create a new key right now. Please report this issue to t
 You have to read the privacy policy and terms of service first.
 In the latter, there is a hidden emoji which you'll have to __send__ (NOT react!) in here.
 
-https://nova-oss.com/legal/privacy
+https://nova-oss.com/legal/privacy?verify={tos_code}
 https://nova-oss.com/legal/terms?verify={tos_code}
 
 I know it's annoying, but it really helps combat spam bots and abuse.

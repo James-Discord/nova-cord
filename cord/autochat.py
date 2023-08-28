@@ -14,10 +14,7 @@ async def process(message):
     if isinstance(message.channel, DMChannel):
         return
 
-    if text == '.empty':
-        return await message.channel.send('‎')
-
-    if 'N0V4x0SS' in text or 'T3BlbkFJ' in text:
+    if ('N0V4x0SS' in text and 'nv-' in text) or ('T3BlbkFJ' in text and 'sk-' in text):
         censored_text = ''
 
         for word in text.split():
@@ -28,25 +25,26 @@ async def process(message):
             censored_text += ' '
 
         await embedder.warn(message, f"""{message.author.mention},
-I think you sent an *OpenAI* or *NovaAI* key in here,
-which could lead to other users accessing your API account without your knowledge.
+I think you sent an *OpenAI* or *NovaAI* key in here.
+This could lead to other users accessing and abusing your API account without your knowledge.
 Be very careful with API credentials!""", content=f'||{message.author.mention} sent (censored version):\n```{censored_text}```||', delete_after=60)
         await message.delete()
 
-    # COMMANDS: WRONG CHANNEL
-    commands_allowed = ('commands' in message.channel.name) or (message.author.guild_permissions.manage_messages)
+    commands_allowed = 'commands' in message.channel.name or 'bot' in message.channel.name
 
-    if text.startswith('/') and not commands_allowed:
-        await embedder.error(message, f'{message.author.mention}, please __only__ run commands in <#1133103276871667722>.', delete_after=10)
-        await message.delete()
-        return
+    if text.startswith('/') and text.count(' ') <= 2:
+        # COMMANDS: WRONG CHANNEL
+        if not commands_allowed:
+            await embedder.error(message, f'{message.author.mention}, please __only__ run commands in <#1133103276871667722>.', delete_after=10)
+            await message.delete()
+            return
 
-    # COMMANDS: NOT RAN CORRECTLY
-    if text.startswith('/') and len(text) > 2:
-        await embedder.warn(message, """Need help running commands? Check out
-**https://nova-oss.com/novacord**!""", delete_after=10)
-        await message.delete()
-        return
+        # COMMANDS: NOT RAN CORRECTLY
+        if len(text) > 2:
+            await embedder.warn(message, """Need help running commands? Check out
+**https://nova-oss.com/novacord** or run `/tutorial`!""", delete_after=10)
+            await message.delete()
+            return
 
     if 'dQw4w9WgXcQ' in text:
         await embedder.warn(message, """Hide your rickrolls better next time...""", delete_after=10)

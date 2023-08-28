@@ -34,11 +34,11 @@ async def on_message(message):
     await autochat.process(message)
     await bot.process_commands(message)
 
-# @bot.slash_command(description='Chat with AI')
-# async def chat(interaction: nextcord.Interaction,
-#     prompt: str = SlashOption(description='AI Prompt', required=True)
-# ):
-#     await chatbot.respond(interaction, prompt)
+@bot.slash_command(description='Chat with AI')
+async def chat(interaction: nextcord.Interaction,
+    prompt: str = SlashOption(description='AI Prompt', required=True)
+):
+    await chatbot.respond(interaction, prompt)
 
 @bot.slash_command(description='Sets your DMs up, so you can write the bot.')
 async def dm_setup(interaction: nextcord.Interaction):
@@ -84,7 +84,6 @@ async def tutorial(interaction: nextcord.Interaction,
         choices=[
             'fix error 401 (invalid key)',
             'fix error 429 (ratelimit/not enough credits)',
-            'use GPT-4',
             'use curl',
             'use Node.js',
             'get my NovaAI API key',
@@ -125,37 +124,30 @@ async def music(interaction: nextcord.Interaction):
         return await embedder.ok(interaction, text)
     return await embedder.error(interaction, 'No one is listening to anything right now.')
 
-# update the message in #music every 10 seconds to show what people are listening to
+
+async def status_update():
+    guild = bot.get_guild(int(os.getenv('DISCORD_GUILD')))
+    members = guild.members
+
+    await bot.change_presence(
+        activity=nextcord.Activity(
+            type=nextcord.ActivityType.watching,
+            name=f'{len(members)} members'
+        )
+    )
+
+async def loop_status_update():
+    while True:
+        await status_update()
+        await nextcord.utils.sleep_until(datetime.datetime.now() + datetime.timedelta(minutes=1))
+
 @bot.event
 async def on_ready():
     print(f'Online as {bot.user} (ID: {bot.user.id})')
 
     await api.start(bot)
-    await bot.change_presence(activity=nextcord.Game(name='with fire'))
 
-    while True:
-        text = ''
-        channel = bot.get_channel(int(os.getenv('DISCORD_MUSIC_CHANNEL_ID')))
-
-        if channel:
-            async for message in channel.history(limit=1):
-                if message.author == bot.user:
-                    for member in channel.guild.members:
-                        text += await get_member_song_line(member)
-
-                    if text:
-                        await message.edit(embed=nextcord.Embed(
-                            title='What are people listening to right now?',
-                            description=text,
-                            color=nextcord.Color.green()
-                        ))
-                    else:
-                        await message.edit(embed=nextcord.Embed(
-                            title='What are people listening to right now?',
-                            description='No one is listening to anything right now :(',
-                            color=nextcord.Color.red()
-                        ))
-
-        await nextcord.utils.sleep_until(nextcord.utils.utcnow().replace(second=0, microsecond=0) + datetime.timedelta(seconds=10))
+    # display status as watching + discord guild member count and update every minute
+    bot.loop.create_task(loop_status_update())
 
 bot.run(os.getenv('DISCORD_TOKEN'))

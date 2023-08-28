@@ -2,11 +2,7 @@ import embedder
 
 async def send(interaction, how_can_i):
     if how_can_i == 'fix error 429 (ratelimit/not enough credits)':
-        text = """This means you used the API too often. You can either wait or:
-- boost the server 
-- donate cryptocurrency (and contact us before or after so we can verify it was you)
-- contribute in any meaningful (we decide) way (programming, research, design, moderating the Discord etc.)
-
+        text = """This means you used the API too often. You can either wait a bit or try to get more credits.
 If you try to bypass this, all your accounts and IP addresses may get banned.
 """
 
@@ -16,13 +12,6 @@ For HTTP requests, it can be specified using a header:
 ```
 Authorization: Bearer nv-...
 ```
-"""
-
-    if how_can_i == 'use GPT-4':
-        text = """Yes, we support GPT-4. For free. You read that correctly.
-Please note though that it might not be very stable or support every parameter.
-
-Simply set the model to `gpt-4`. That's it <3
 """
 
     if how_can_i == 'use the API in custom front-ends':
@@ -49,7 +38,11 @@ Code: https://github.com/ztjhz/BetterChatGPT
 Don't forget to also set the correct model and API key!
 
 **Warning:** in theory, these front-ends could __steal your NovaAI key__.
-Self-host them if you know how to. Otherwise, wait for us to create a official NovaAI front-end. 
+Self-host them if you know how to.
+
+**__Official front-end__**
+:point_right: https://chat.nova-oss.com
+
 """
 
     if how_can_i == 'get my NovaAI API key':
@@ -60,7 +53,8 @@ Fore more information: https://nova-oss.com/novacord
 """
 
     if how_can_i == 'fix ModuleNotFoundErrors':
-        text = """You can install Python packages using `pip`. Here's an example: `pip install openai`.
+        text = """You can install Python packages using the terminal command `pip`.
+Here's an example: `pip install openai`.
 Don't have `pip` installed? Learn more here: https://pip.pypa.io/en/stable/installation/.
 """
 

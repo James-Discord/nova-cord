@@ -89,7 +89,7 @@ async def set_credits(interaction, user, amount):
     if not interaction.user.guild_permissions.administrator:
         await embedder.error(interaction, """Sorry, you don't have the permission to do that.""", ephemeral=True)
         return
-    
+
     try:
         userinfo = await request_user_by_discord_id(user.id)
 

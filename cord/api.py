@@ -19,6 +19,7 @@ async def start(client):
         return aiohttp.web.json_response(await get_userinfo())
 
     app.router.add_get('/get_roles', get_roles)
+    app.router.add_get('/ping', lambda request: aiohttp.web.Response(text='pong'))
 
     runner = aiohttp.web.AppRunner(app)
     await runner.setup()
