@@ -13,7 +13,7 @@ load_dotenv()
 async def verify(interaction) -> bool:
     try:
         resp = requests.post(
-            url='https://nova-oss.com/api/tos-verification',
+            url='http://localhost:2323/api/tos-verification',
             timeout=5,
             headers={
                 'Content-Type': 'application/json',
@@ -21,9 +21,12 @@ async def verify(interaction) -> bool:
             }
         ).json()
     except Exception as exc:
-        await embedder.error(interaction, """Sorry,
+        await embedder.error(interaction, f"""Sorry,
 the API server for the verification system is not functioning,
-which means you can\'t create a new key right now. Please report this issue to the staff!""")
+which means you can\'t create a new key right now. Please report this issue to the staff:
+
+```{type(exc)} - {exc}```
+""")
         raise exc
 
     success = False
