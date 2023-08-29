@@ -12,7 +12,7 @@ load_dotenv()
 
 async def request_user_by_discord_id(discord_id):
     return requests.get(
-        url=f'https://api.nova-oss.com/users?discord_id={discord_id}',
+        url=f'http://localhost:2333/users?discord_id={discord_id}',
         timeout=3,
         headers={
             'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ Please report this issue to the staff!""", ephemeral=True)
 
     try:
         requests.put(
-            url=f'https://api.nova-oss.com/users?discord_id={account["auth"]["discord"]}',
+            url=f'http://localhost:2333/users?discord_id={account["auth"]["discord"]}',
             timeout=3,
             headers={
                 'Content-Type': 'application/json',

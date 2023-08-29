@@ -33,7 +33,7 @@ Please report this issue to the staff!""", ephemeral=True)
 
         # CREATE USER
         get_response = requests.post(
-            url='https://api.nova-oss.com/users',
+            url='http://localhost:2333/users',
             timeout=3,
             headers={
                 'Content-Type': 'application/json',
