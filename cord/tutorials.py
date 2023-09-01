@@ -102,9 +102,29 @@ curl https://api.nova-oss.com/v1/chat/completions \
 """
 
     if how_can_i == 'use Node.js':        
-        text = """Currently, the official node.js `openai` package doesn't support custom endpoints in their stable version,
-but will probably change after the release of v4.0.0: https://github.com/openai/openai-node/discussions/182#discussioncomment-6335703.
-Meanwhile, you can just do "normal" requests like in curl without any package.
+        text = """
+```node
+const OpenAI = require('openai');
+
+const openai = new OpenAI({
+  apiKey: 'PUT_YOUR_NOVA_API_KEY_HERE', 
+  baseURL: 'https://api.nova-oss.com/v1/',
+});
+
+async function main() {
+  const completion = await openai.chat.completions.create({
+    messages: [
+      { role: 'system', content: 'You are a helpful assistant.' },
+      { role: 'user', content: 'What is the highest mountain?' }
+    ],
+    model: 'gpt-3.5-turbo',
+  });
+  
+  console.log(completion.choices);
+}
+
+main();
+```
 """
 
     if how_can_i == 'program a Python Discord Bot with streaming':
