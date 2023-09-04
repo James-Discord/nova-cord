@@ -15,10 +15,8 @@ async def start(client):
         user_roles = {member.id: [role.name for role in member.roles] for member in members}
         return user_roles
 
-    async def get_roles(request):
-        return aiohttp.web.json_response(await get_userinfo())
-
-    app.router.add_get('/get_roles', get_roles)
+    app.router.add_get('/get_roles', lambda request: aiohttp.web.json_response(get_userinfo()))
+    app.router.add_get('/user_ids', lambda request: aiohttp.web.json_response([member.id for member in client.get_guild(int(os.getenv('DISCORD_GUILD'))).members]))
     app.router.add_get('/ping', lambda request: aiohttp.web.Response(text='pong'))
 
     runner = aiohttp.web.AppRunner(app)
