@@ -103,7 +103,7 @@ curl https://api.nova-oss.com/v1/chat/completions \
 
     if how_can_i == 'use Node.js':        
         text = """
-```node
+```js
 const OpenAI = require('openai');
 
 const openai = new OpenAI({
