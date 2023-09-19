@@ -3,6 +3,8 @@
 import os
 import json
 import requests
+import string
+import random
 
 import embedder
 
@@ -124,11 +126,43 @@ Please report this issue to the staff!""", ephemeral=True)
     await embedder.ok(interaction, f"""Successfully set the credits of {user.name} to **{amount}**.""", ephemeral=True)
 
 async def reset_key(interaction):
-    account = await get_account(interaction)
 
-    if not account:
-        interaction.message.reply("""You don't have an account yet!""")
-    
-    print(account)
+    return await embedder.error(interaction, """Not finished yet""", ephemeral=True)
 
-    interaction.message.reply("""1""")
+    try:
+        account = await get_account(interaction)
+
+        if not account:
+            await embedder.error(interaction, """It seems like you don't have an account yet.""", ephemeral=True)
+        
+        requests.put(
+            url=f'http://localhost:2333/users',
+            timeout=3,
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': os.getenv('CORE_API_KEY')
+            },
+            data=json.dumps({
+                "discord_id": account["auth"]["discord"],
+                "updates": {"$set": {"api_key": await new_api_key()}}
+            })
+        )
+
+        await embedder.ok(interaction, f"""Successfully reset your key!""", ephemeral=True)
+
+    except Exception as exc:
+        await embedder.error(interaction, """Sorry, there was an error while resetting your key.
+Please report this issue to the staff!""", ephemeral=True)
+        raise exc
+
+
+async def new_api_key() -> str:
+    chars = string.ascii_letters + string.digits
+
+    infix = os.getenv('KEYGEN_INFIX')
+    suffix = ''.join(random.choices(chars, k=20))
+    prefix = ''.join(random.choices(chars, k=20))
+
+    new_api_key = f'nv-{prefix}{infix}{suffix}'
+
+    return new_api_key
