@@ -124,6 +124,9 @@ async def music(interaction: nextcord.Interaction):
         return await embedder.ok(interaction, text)
     return await embedder.error(interaction, 'No one is listening to anything right now.')
 
+@bot.slash_command(description='Get yourself a new API key')
+async def resetkey(interaction: nextcord.Interaction):
+    ...
 
 async def status_update():
     guild = bot.get_guild(int(os.getenv('DISCORD_GUILD')))

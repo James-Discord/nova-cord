@@ -122,3 +122,11 @@ Please report this issue to the staff!""", ephemeral=True)
         raise exc
     
     await embedder.ok(interaction, f"""Successfully set the credits of {user.name} to **{amount}**.""", ephemeral=True)
+
+async def reset_key(interaction):
+    account = await get_account(interaction)
+    
+    if not account:
+        return
+    
+    print(account)
