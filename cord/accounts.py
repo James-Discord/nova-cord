@@ -125,8 +125,10 @@ Please report this issue to the staff!""", ephemeral=True)
 
 async def reset_key(interaction):
     account = await get_account(interaction)
-    
+
     if not account:
-        return
+        interaction.message.reply("""You don't have an account yet!""")
     
     print(account)
+
+    interaction.message.reply("""1""")

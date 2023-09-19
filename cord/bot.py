@@ -126,7 +126,7 @@ async def music(interaction: nextcord.Interaction):
 
 @bot.slash_command(description='Get yourself a new API key')
 async def resetkey(interaction: nextcord.Interaction):
-    ...
+    return await accounts.reset_key(interaction)
 
 async def status_update():
     guild = bot.get_guild(int(os.getenv('DISCORD_GUILD')))
