@@ -93,29 +93,31 @@ async def set_credits(interaction, user, amount):
         return
 
     try:
-        userinfo = await request_user_by_discord_id(user.id)
+        account = await request_user_by_discord_id(user.id)
 
     except Exception as exc:
         await embedder.error(interaction, """Sorry, there was an error while checking if you have an account.
 Please report this issue to the staff!""", ephemeral=True)
         raise exc
     
-    if userinfo.status_code == 404:
+    if account.status_code == 404:
         await embedder.error(interaction, """You don't have an account yet!""", ephemeral=True)
         return
-    
-    account = userinfo.json()
-    account["credits"] = amount
 
     try:
+        account = account.json()
+
         requests.put(
-            url=f'http://localhost:2333/users?discord_id={account["auth"]["discord"]}',
+            url=f'http://localhost:2333/users',
             timeout=3,
             headers={
                 'Content-Type': 'application/json',
                 'Authorization': os.getenv('CORE_API_KEY')
             },
-            data=json.dumps(account)
+            data=json.dumps({
+                "discord_id": account["auth"]["discord"],
+                "updates": {"$set": {"credits": amount}}
+            })
         )
         
     except Exception as exc:
@@ -126,9 +128,6 @@ Please report this issue to the staff!""", ephemeral=True)
     await embedder.ok(interaction, f"""Successfully set the credits of {user.name} to **{amount}**.""", ephemeral=True)
 
 async def reset_key(interaction):
-
-    return await embedder.error(interaction, """Not finished yet""", ephemeral=True)
-
     try:
         account = await get_account(interaction)
 
