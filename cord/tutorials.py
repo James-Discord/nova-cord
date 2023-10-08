@@ -62,22 +62,29 @@ Don't have `pip` installed? Learn more here: https://pip.pypa.io/en/stable/insta
 """
 
     if how_can_i == 'use the Python library':
-        text = """To use the official `nova_python` Python library, you just need to do the following.
+        text = """To use the official `openai` Python library, you just need to do the following.
 ```py
-from nova_python import Models, Endpoints, NovaClient
+# Import the OpenAI library (assuming it's already installed)
+import openai
 
-client = NovaClient('YOUR_API_KEY')
+# Set the OpenAI API key
+openai.api_key = "NOVA_AI_KEY"
 
-reponse = client.make_request(
-    endpoint = Endpoints.CHAT_COMPLETION,
-    model = Models.GPT3,
-    data=[
+# Set the OpenAI API base URL
+openai.api_base = "https://api.nova-oss.com/v1/"
+
+# Create a chat completion using the gpt-3.5-turbo model and the user and system messages
+completion = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo",
+    messages=[
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": "What is the highest mountain?"}
     ]
 )
 
-print(reponse.get_message_content())
+# Extract and print the content of the model's response
+response_content = completion.choices[0].message.content
+print(response_content)
 ```
 """
 
