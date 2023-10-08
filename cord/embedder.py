@@ -23,7 +23,7 @@ async def send(
         color=color
     )
 
-    embed.set_footer(text='Powered by NovaAI with ❤️', icon_url='https://i.ibb.co/LDyFcSh/fav-blurple.png')
+    embed.set_footer(text='Powered by Nova with ❤️', icon_url='https://i.ibb.co/LDyFcSh/fav-blurple.png')
     embed.set_author(name='NovaCord', url='https://nova-oss.com/novacord')
 
     interaction_type = Union[nextcord.Interaction, nextcord.InteractionResponse]
