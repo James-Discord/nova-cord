@@ -40,7 +40,7 @@ async def chat(interaction: nextcord.Interaction,
 ):
     await chatbot.respond(interaction, prompt)
 
-@bot.slash_command(description='Sets your DMs up, so you can write the bot.')
+@bot.slash_command(description='Sets your DMs up, so you can message to the bot.')
 async def dm_setup(interaction: nextcord.Interaction):
     try:
         await interaction.user.create_dm()
